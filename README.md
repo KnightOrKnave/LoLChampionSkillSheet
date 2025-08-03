@@ -1,0 +1,2 @@
+# LoLChampionSkillSheet
+チャンピオン練度スキルシート管理用リポジトリ
