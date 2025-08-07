@@ -16,11 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
             div.innerHTML = `
                 <span class="champion-name">${champion.name}</span>
                 <select class="skill-select" name="${champion.name}">
-                    <option value="0">使用不可</option>
-                    <option value="1">練習中</option>
-                    <option value="2">使用可能</option>
-                    <option value="3">得意</option>
-                    <option value="4">最得意</option>
+                    <option value="-100">使えない</option>
+                    <option value="0" selected>使ったことない</option>
+                    <option value="25">スキルはわかる</option>
+                    <option value="50">使える</option>
+                    <option value="75">得意</option>
+                    <option value="100">絶対の自信あり</option>
                 </select>
             `;
             
@@ -34,14 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const roleChampions = document.getElementById('role-champions');
         const typeChampions = document.getElementById('type-champions');
 
-        // 使用可能なチャンピオンのフィルタリング（レベル2以上）
+        // 使用可能なチャンピオンのフィルタリング（スコア25以上）
         const usableChampions = champions.filter(champ => 
-            parseInt(formData.get(champ.name)) >= 2
+            parseInt(formData.get(champ.name)) >= 25
         );
 
         // 使用可能なチャンピオンの表示
         masteredChampions.innerHTML = usableChampions
-            .map(champ => `<li>${champ.name} (レベル${formData.get(champ.name)})</li>`)
+            .map(champ => {
+                const score = parseInt(formData.get(champ.name));
+                let skillLevel = '';
+                if (score === 100) skillLevel = '絶対の自信あり';
+                else if (score === 75) skillLevel = '得意';
+                else if (score === 50) skillLevel = '使える';
+                else if (score === 25) skillLevel = 'スキルはわかる';
+                return `<li>${champ.name} (${skillLevel})</li>`;
+            })
             .join('');
 
         // ロール別の表示
@@ -49,7 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(([roleKey, roleName]) => {
                 const championsInRole = usableChampions
                     .filter(champ => champ.roles.includes(roleKey))
-                    .map(champ => `<li>${champ.name} (レベル${formData.get(champ.name)})</li>`)
+                    .map(champ => {
+                        const score = parseInt(formData.get(champ.name));
+                        let skillLevel = '';
+                        if (score === 100) skillLevel = '絶対の自信あり';
+                        else if (score === 75) skillLevel = '得意';
+                        else if (score === 50) skillLevel = '使える';
+                        else if (score === 25) skillLevel = 'スキルはわかる';
+                        return `<li>${champ.name} (${skillLevel})</li>`;
+                    })
                     .join('');
                 
                 return championsInRole ? `
@@ -66,7 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
             .map(([typeKey, typeName]) => {
                 const championsOfType = usableChampions
                     .filter(champ => champ.types.includes(typeKey))
-                    .map(champ => `<li>${champ.name} (レベル${formData.get(champ.name)})</li>`)
+                    .map(champ => {
+                        const score = parseInt(formData.get(champ.name));
+                        let skillLevel = '';
+                        if (score === 100) skillLevel = '絶対の自信あり';
+                        else if (score === 75) skillLevel = '得意';
+                        else if (score === 50) skillLevel = '使える';
+                        else if (score === 25) skillLevel = 'スキルはわかる';
+                        return `<li>${champ.name} (${skillLevel})</li>`;
+                    })
                     .join('');
                 
                 return championsOfType ? `
