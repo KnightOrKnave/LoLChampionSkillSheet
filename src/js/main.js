@@ -1,3 +1,5 @@
+import { champions, roles, types } from './data/champions.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const formPage = document.getElementById('form-page');
     const resultPage = document.getElementById('result-page');
