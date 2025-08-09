@@ -105,9 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     const statsContainer = document.getElementById('stats-container');
 
-    // 使用可能なチャンピオンのフィルタリング（スコア25以上）
+    // スコアに基づいてチャンピオンをフィルタリング（「使ったことない」(0)以外を表示）
     const usableChampions = champions.filter(
-      (champ) => parseInt(formData.get(champ.name)) >= 25
+      (champ) => parseInt(formData.get(champ.name)) !== 0
     );
 
     // スキルレベルを取得する関数
@@ -116,7 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (score === 75) return '得意';
       if (score === 50) return '使える';
       if (score === 25) return 'スキルはわかる';
-      return '';
+      if (score === -100) return '使えない';
+      return '使ったことない';
     };
 
     // チャンピオンリストを生成する関数
@@ -156,7 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
       tableBody.innerHTML = sortedChampions.map(champ => {
         const score = parseInt(formData.get(champ.name));
         const skillLevel = getSkillLevel(score);
-        const skillColorClass = score >= 75 ? 'advanced' : score >= 50 ? 'intermediate' : score >= 25 ? 'beginner' : 'novice';
+        const skillColorClass = 
+          score >= 75 ? 'advanced' : 
+          score >= 50 ? 'intermediate' : 
+          score >= 25 ? 'beginner' : 
+          score === -100 ? 'bad' : 'novice';
 
         return `
           <tr>
@@ -187,60 +192,58 @@ document.addEventListener('DOMContentLoaded', () => {
     // 初期テーブル表示
     updateChampionsTable(usableChampions);
 
+    // チャンピオンリストをスコアでソートする関数
+    const sortChampionsByScore = (champions) => {
+      return [...champions].sort((a, b) => {
+        const scoreA = parseInt(formData.get(a.name));
+        const scoreB = parseInt(formData.get(b.name));
+        return scoreB - scoreA; // 降順ソート
+      });
+    };
+
+    // チャンピオングループを生成する関数
+    const createChampionGroup = (title, champions) => {
+      const sortedChampions = sortChampionsByScore(champions)
+        .map(createChampionList)
+        .join('');
+
+      return sortedChampions
+        ? `
+          <div class="group">
+              <h4>${title}</h4>
+              <ul class="champion-list">${sortedChampions}</ul>
+          </div>
+        `
+        : '';
+    };
+
     // ロール別の表示
     roleChampions.innerHTML = Object.entries(roles)
       .map(([roleKey, roleName]) => {
-        const championsInRole = usableChampions
-          .filter((champ) => champ.roles.includes(roleKey))
-          .map(createChampionList)
-          .join('');
-
-        return championsInRole
-          ? `
-            <div class="role-group">
-                <h4>${roleName}</h4>
-                <ul class="champion-list">${championsInRole}</ul>
-            </div>
-          `
-          : '';
+        const championsInRole = usableChampions.filter((champ) =>
+          champ.roles.includes(roleKey)
+        );
+        return createChampionGroup(roleName, championsInRole);
       })
       .join('');
 
     // タイプ別の表示
     typeChampions.innerHTML = Object.entries(types)
       .map(([typeKey, typeName]) => {
-        const championsOfType = usableChampions
-          .filter((champ) => champ.types.includes(typeKey))
-          .map(createChampionList)
-          .join('');
-
-        return championsOfType
-          ? `
-            <div class="type-group">
-                <h4>${typeName}</h4>
-                <ul class="champion-list">${championsOfType}</ul>
-            </div>
-          `
-          : '';
+        const championsOfType = usableChampions.filter((champ) =>
+          champ.types.includes(typeKey)
+        );
+        return createChampionGroup(typeName, championsOfType);
       })
       .join('');
 
     // ダメージタイプ別の表示
     damageTypeChampions.innerHTML = Object.entries(damageTypes)
       .map(([damageType, displayName]) => {
-        const championsOfDamageType = usableChampions
-          .filter((champ) => champ.damage === damageType)
-          .map(createChampionList)
-          .join('');
-
-        return championsOfDamageType
-          ? `
-            <div class="type-group">
-                <h4>${displayName}</h4>
-                <ul class="champion-list">${championsOfDamageType}</ul>
-            </div>
-          `
-          : '';
+        const championsOfDamageType = usableChampions.filter(
+          (champ) => champ.damage === damageType
+        );
+        return createChampionGroup(displayName, championsOfDamageType);
       })
       .join('');
 
@@ -248,19 +251,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const rangeTypes = { 近接: '近接', 遠隔: '遠隔' };
     attackRangeChampions.innerHTML = Object.entries(rangeTypes)
       .map(([rangeType, displayName]) => {
-        const championsOfRange = usableChampions
-          .filter((champ) => champ.attributes.includes(rangeType))
-          .map(createChampionList)
-          .join('');
-
-        return championsOfRange
-          ? `
-            <div class="type-group">
-                <h4>${displayName}</h4>
-                <ul class="champion-list">${championsOfRange}</ul>
-            </div>
-          `
-          : '';
+        const championsOfRange = usableChampions.filter((champ) =>
+          champ.attributes.includes(rangeType)
+        );
+        return createChampionGroup(displayName, championsOfRange);
       })
       .join('');
 
