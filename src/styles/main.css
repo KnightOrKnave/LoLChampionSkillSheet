@@ -54,6 +54,88 @@ body {
 
 .champion-name {
     font-weight: 500;
+    min-width: 150px;
+}
+
+.skill-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.skill-radio {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.skill-radio:hover {
+    background-color: #f0f0f0;
+}
+
+.skill-radio input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.skill-label {
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.skill-radio input[type="radio"]:checked + .skill-label {
+    color: white;
+    font-weight: bold;
+}
+
+/* スキルレベルごとの色設定 */
+.skill-label.bad {
+    border-color: #ff4444;
+}
+.skill-radio input[type="radio"]:checked + .skill-label.bad {
+    background-color: #ff4444;
+}
+
+.skill-label.novice {
+    border-color: #999999;
+}
+.skill-radio input[type="radio"]:checked + .skill-label.novice {
+    background-color: #999999;
+}
+
+.skill-label.beginner {
+    border-color: #4CAF50;
+}
+.skill-radio input[type="radio"]:checked + .skill-label.beginner {
+    background-color: #4CAF50;
+}
+
+.skill-label.intermediate {
+    border-color: #2196F3;
+}
+.skill-radio input[type="radio"]:checked + .skill-label.intermediate {
+    background-color: #2196F3;
+}
+
+.skill-label.advanced {
+    border-color: #9C27B0;
+}
+.skill-radio input[type="radio"]:checked + .skill-label.advanced {
+    background-color: #9C27B0;
+}
+
+.skill-label.master {
+    border-color: #FF9800;
+}
+.skill-radio input[type="radio"]:checked + .skill-label.master {
+    background-color: #FF9800;
 }
 
 .skill-radio-group {

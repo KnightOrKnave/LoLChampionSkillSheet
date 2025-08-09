@@ -21,14 +21,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
       div.innerHTML = `
                 <span class="champion-name">${champion.nameJa}</span>
-                <select class="skill-select" name="${champion.name}">
-                    <option value="-100">使えない</option>
-                    <option value="0" selected>使ったことない</option>
-                    <option value="25">スキルはわかる</option>
-                    <option value="50">使える</option>
-                    <option value="75">得意</option>
-                    <option value="100">絶対の自信あり</option>
-                </select>
+                <div class="skill-radio-group">
+                    <label class="skill-radio">
+                        <input type="radio" name="${champion.name}" value="-100">
+                        <span class="skill-label bad">使えない</span>
+                    </label>
+                    <label class="skill-radio">
+                        <input type="radio" name="${champion.name}" value="0" checked>
+                        <span class="skill-label novice">使ったことない</span>
+                    </label>
+                    <label class="skill-radio">
+                        <input type="radio" name="${champion.name}" value="25">
+                        <span class="skill-label beginner">スキルはわかる</span>
+                    </label>
+                    <label class="skill-radio">
+                        <input type="radio" name="${champion.name}" value="50">
+                        <span class="skill-label intermediate">使える</span>
+                    </label>
+                    <label class="skill-radio">
+                        <input type="radio" name="${champion.name}" value="75">
+                        <span class="skill-label advanced">得意</span>
+                    </label>
+                    <label class="skill-radio">
+                        <input type="radio" name="${champion.name}" value="100">
+                        <span class="skill-label master">絶対の自信あり</span>
+                    </label>
+                </div>
             `;
 
       championsContainer.appendChild(div);
