@@ -187,14 +187,36 @@ document.addEventListener('DOMContentLoaded', () => {
     formPage.classList.add('active');
   });
 
-  // 最後に移動ボタンの処理
+  // スクロールボタンの処理
   const scrollBottomButton = document.getElementById('scroll-bottom');
+
+  // スクロール位置に応じてボタンの状態を更新
+  function updateScrollButton() {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const isAtBottom = scrollPosition >= documentHeight - 50; // 50pxのマージンを設定
+
+    scrollBottomButton.textContent = isAtBottom ? '最初に移動' : '最後に移動';
+  }
+
+  // スクロールボタンのクリック処理
   scrollBottomButton.addEventListener('click', () => {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const isAtBottom = scrollPosition >= documentHeight - 50;
+
     window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
+      top: isAtBottom ? 0 : documentHeight,
+      behavior: 'smooth',
     });
   });
+
+  // スクロールイベントの監視
+  window.addEventListener('scroll', updateScrollButton);
+  // 画面サイズ変更時にも更新
+  window.addEventListener('resize', updateScrollButton);
+  // 初期状態の設定
+  updateScrollButton();
 
   // 初期化
   createChampionForm();
