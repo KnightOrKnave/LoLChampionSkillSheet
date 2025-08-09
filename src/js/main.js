@@ -1,5 +1,32 @@
 import { champions, roles, types } from './data/champions.js';
 
+// 統計情報の計算
+function calculateStats(usableChampions) {
+    const stats = {
+        damage: { 物理: 0, 魔法: 0, 混合: 0 },
+        range: { 近接: 0, 遠隔: 0 },
+        attributes: {}
+    };
+
+    usableChampions.forEach(champion => {
+        // ダメージタイプの集計
+        stats.damage[champion.damage]++;
+
+        // 射程の集計
+        if (champion.attributes.includes('近接')) stats.range.近接++;
+        if (champion.attributes.includes('遠隔')) stats.range.遠隔++;
+
+        // その他の属性の集計
+        champion.attributes.forEach(attr => {
+            if (attr !== '近接' && attr !== '遠隔') {
+                stats.attributes[attr] = (stats.attributes[attr] || 0) + 1;
+            }
+        });
+    });
+
+    return stats;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const formPage = document.getElementById('form-page');
   const resultPage = document.getElementById('result-page');
@@ -45,13 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 結果の表示
-  function showResults(formData) {
-    const masteredChampions = document.getElementById('mastered-champions');
-    const roleChampions = document.getElementById('role-champions');
-    const typeChampions = document.getElementById('type-champions');
-
-    // 使用可能なチャンピオンのフィルタリング（スコア25以上）
+    // 結果の表示
+    function showResults(formData) {
+        const masteredChampions = document.getElementById('mastered-champions');
+        const roleChampions = document.getElementById('role-champions');
+        const typeChampions = document.getElementById('type-champions');
+        const statsContainer = document.getElementById('stats-container');    // 使用可能なチャンピオンのフィルタリング（スコア25以上）
     const usableChampions = champions.filter(
       (champ) => parseInt(formData.get(champ.name)) >= 25
     );
