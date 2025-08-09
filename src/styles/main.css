@@ -217,7 +217,29 @@ body {
     background-color: #FF9800;
 }
 
-.submit-button, .back-button, .scroll-bottom-button {
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.submit-button, .back-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1.25rem 3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 240px;
+    text-align: center;
+}
+
+.scroll-bottom-button {
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -228,7 +250,18 @@ body {
     margin-top: 2rem;
 }
 
-.submit-button:hover, .back-button:hover, .scroll-bottom-button:hover {
+.submit-button:hover, .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+
+.submit-button:active, .back-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-bottom-button:hover {
     opacity: 0.9;
 }
 
@@ -256,6 +289,99 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
+}
+
+.table-controls {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.control-select,
+.control-input {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.control-input {
+    min-width: 200px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 1rem;
+}
+
+.champions-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.champions-table th,
+.champions-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.champions-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.champions-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.skill-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: white;
+}
+
+.skill-badge.master {
+    background-color: #FF9800;
+}
+
+.skill-badge.advanced {
+    background-color: #9C27B0;
+}
+
+.skill-badge.intermediate {
+    background-color: #2196F3;
+}
+
+.skill-badge.beginner {
+    background-color: #4CAF50;
+}
+
+.skill-badge.novice {
+    background-color: #9E9E9E;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    background-color: #e9ecef;
+    margin: 0.1rem;
+}
+
+.badge-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
 }
 
 .stats-grid {

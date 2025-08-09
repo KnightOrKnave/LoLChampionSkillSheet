@@ -97,47 +97,111 @@ document.addEventListener('DOMContentLoaded', () => {
     const masteredChampions = document.getElementById('mastered-champions');
     const roleChampions = document.getElementById('role-champions');
     const typeChampions = document.getElementById('type-champions');
-    const statsContainer = document.getElementById('stats-container'); // 使用可能なチャンピオンのフィルタリング（スコア25以上）
+    const damageTypeChampions = document.getElementById(
+      'damage-type-champions'
+    );
+    const attackRangeChampions = document.getElementById(
+      'attack-range-champions'
+    );
+    const statsContainer = document.getElementById('stats-container');
+
+    // 使用可能なチャンピオンのフィルタリング（スコア25以上）
     const usableChampions = champions.filter(
       (champ) => parseInt(formData.get(champ.name)) >= 25
     );
 
-    // 使用可能なチャンピオンの表示
-    masteredChampions.innerHTML = usableChampions
-      .map((champ) => {
+    // スキルレベルを取得する関数
+    const getSkillLevel = (score) => {
+      if (score === 100) return '絶対の自信あり';
+      if (score === 75) return '得意';
+      if (score === 50) return '使える';
+      if (score === 25) return 'スキルはわかる';
+      return '';
+    };
+
+    // チャンピオンリストを生成する関数
+    const createChampionList = (champ) => {
+      const score = parseInt(formData.get(champ.name));
+      const skillLevel = getSkillLevel(score);
+      return `<li>${champ.nameJa} (${skillLevel})</li>`;
+    };
+
+    // テーブル表示用の関数
+    function updateChampionsTable(champions, sortBy = 'score-desc', filterText = '') {
+      const tableBody = document.getElementById('champions-table-body');
+      const filteredChampions = champions.filter(champ => 
+        filterText === '' || champ.nameJa.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      // ソート処理
+      const sortedChampions = [...filteredChampions].sort((a, b) => {
+        const scoreA = parseInt(formData.get(a.name));
+        const scoreB = parseInt(formData.get(b.name));
+        
+        switch (sortBy) {
+          case 'score-desc':
+            return scoreB - scoreA;
+          case 'score-asc':
+            return scoreA - scoreB;
+          case 'name-asc':
+            return a.nameJa.localeCompare(b.nameJa);
+          case 'name-desc':
+            return b.nameJa.localeCompare(a.nameJa);
+          default:
+            return 0;
+        }
+      });
+
+      // テーブル内容の更新
+      tableBody.innerHTML = sortedChampions.map(champ => {
         const score = parseInt(formData.get(champ.name));
-        let skillLevel = '';
-        if (score === 100) skillLevel = '絶対の自信あり';
-        else if (score === 75) skillLevel = '得意';
-        else if (score === 50) skillLevel = '使える';
-        else if (score === 25) skillLevel = 'スキルはわかる';
-        return `<li>${champ.name} (${skillLevel})</li>`;
-      })
-      .join('');
+        const skillLevel = getSkillLevel(score);
+        const skillColorClass = score >= 75 ? 'advanced' : score >= 50 ? 'intermediate' : score >= 25 ? 'beginner' : 'novice';
+
+        return `
+          <tr>
+            <td>${champ.nameJa}</td>
+            <td>${score}</td>
+            <td><span class="skill-badge ${skillColorClass}">${skillLevel}</span></td>
+            <td><div class="badge-list">${champ.roles.map(role => `<span class="badge">${roles[role]}</span>`).join('')}</div></td>
+            <td><div class="badge-list">${champ.types.map(type => `<span class="badge">${types[type]}</span>`).join('')}</div></td>
+            <td><span class="badge">${damageTypes[champ.damage]}</span></td>
+            <td><span class="badge">${champ.attributes.includes('遠隔') ? '遠隔' : '近接'}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // イベントリスナーの設定
+    const sortSelect = document.getElementById('sort-select');
+    const filterInput = document.getElementById('champion-filter');
+
+    sortSelect.addEventListener('change', () => {
+      updateChampionsTable(usableChampions, sortSelect.value, filterInput.value);
+    });
+
+    filterInput.addEventListener('input', () => {
+      updateChampionsTable(usableChampions, sortSelect.value, filterInput.value);
+    });
+
+    // 初期テーブル表示
+    updateChampionsTable(usableChampions);
 
     // ロール別の表示
     roleChampions.innerHTML = Object.entries(roles)
       .map(([roleKey, roleName]) => {
         const championsInRole = usableChampions
           .filter((champ) => champ.roles.includes(roleKey))
-          .map((champ) => {
-            const score = parseInt(formData.get(champ.name));
-            let skillLevel = '';
-            if (score === 100) skillLevel = '絶対の自信あり';
-            else if (score === 75) skillLevel = '得意';
-            else if (score === 50) skillLevel = '使える';
-            else if (score === 25) skillLevel = 'スキルはわかる';
-            return `<li>${champ.name} (${skillLevel})</li>`;
-          })
+          .map(createChampionList)
           .join('');
 
         return championsInRole
           ? `
-                    <div class="role-group">
-                        <h4>${roleName}</h4>
-                        <ul class="champion-list">${championsInRole}</ul>
-                    </div>
-                `
+            <div class="role-group">
+                <h4>${roleName}</h4>
+                <ul class="champion-list">${championsInRole}</ul>
+            </div>
+          `
           : '';
       })
       .join('');
@@ -147,24 +211,55 @@ document.addEventListener('DOMContentLoaded', () => {
       .map(([typeKey, typeName]) => {
         const championsOfType = usableChampions
           .filter((champ) => champ.types.includes(typeKey))
-          .map((champ) => {
-            const score = parseInt(formData.get(champ.name));
-            let skillLevel = '';
-            if (score === 100) skillLevel = '絶対の自信あり';
-            else if (score === 75) skillLevel = '得意';
-            else if (score === 50) skillLevel = '使える';
-            else if (score === 25) skillLevel = 'スキルはわかる';
-            return `<li>${champ.name} (${skillLevel})</li>`;
-          })
+          .map(createChampionList)
           .join('');
 
         return championsOfType
           ? `
-                    <div class="type-group">
-                        <h4>${typeName}</h4>
-                        <ul class="champion-list">${championsOfType}</ul>
-                    </div>
-                `
+            <div class="type-group">
+                <h4>${typeName}</h4>
+                <ul class="champion-list">${championsOfType}</ul>
+            </div>
+          `
+          : '';
+      })
+      .join('');
+
+    // ダメージタイプ別の表示
+    damageTypeChampions.innerHTML = Object.entries(damageTypes)
+      .map(([damageType, displayName]) => {
+        const championsOfDamageType = usableChampions
+          .filter((champ) => champ.damage === damageType)
+          .map(createChampionList)
+          .join('');
+
+        return championsOfDamageType
+          ? `
+            <div class="type-group">
+                <h4>${displayName}</h4>
+                <ul class="champion-list">${championsOfDamageType}</ul>
+            </div>
+          `
+          : '';
+      })
+      .join('');
+
+    // 攻撃範囲別の表示
+    const rangeTypes = { 近接: '近接', 遠隔: '遠隔' };
+    attackRangeChampions.innerHTML = Object.entries(rangeTypes)
+      .map(([rangeType, displayName]) => {
+        const championsOfRange = usableChampions
+          .filter((champ) => champ.attributes.includes(rangeType))
+          .map(createChampionList)
+          .join('');
+
+        return championsOfRange
+          ? `
+            <div class="type-group">
+                <h4>${displayName}</h4>
+                <ul class="champion-list">${championsOfRange}</ul>
+            </div>
+          `
           : '';
       })
       .join('');

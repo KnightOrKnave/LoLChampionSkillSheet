@@ -18,18 +18,44 @@
           <div id="champions-container" class="champions-container">
             <!-- チャンピオンリストがここに動的に追加されます -->
           </div>
-          <button type="submit" class="submit-button">結果を確認</button>
-          <button type="button" id="scroll-bottom" class="scroll-bottom-button">
-            最後に移動
-          </button>
+          <div class="button-container">
+            <button type="submit" class="submit-button">結果を確認</button>
+            <button type="button" id="scroll-bottom" class="scroll-bottom-button">
+              最後に移動
+            </button>
+          </div>
         </form>
       </div>
 
       <div id="result-page" class="page">
         <h2>練度チェック結果</h2>
         <div class="result-section">
-          <h3>使用可能なチャンピオン</h3>
-          <ul id="mastered-champions" class="champion-list"></ul>
+          <h3>使用可能なチャンピオン一覧</h3>
+          <div class="table-controls">
+            <select id="sort-select" class="control-select">
+              <option value="score-desc">スコア（高い順）</option>
+              <option value="score-asc">スコア（低い順）</option>
+              <option value="name-asc">名前（昇順）</option>
+              <option value="name-desc">名前（降順）</option>
+            </select>
+            <input type="text" id="champion-filter" class="control-input" placeholder="チャンピオン名で検索...">
+          </div>
+          <div class="table-container">
+            <table id="champions-table" class="champions-table">
+              <thead>
+                <tr>
+                  <th>チャンピオン</th>
+                  <th>スコア</th>
+                  <th>熟練度</th>
+                  <th>ロール</th>
+                  <th>役割</th>
+                  <th>ダメージ</th>
+                  <th>攻撃範囲</th>
+                </tr>
+              </thead>
+              <tbody id="champions-table-body"></tbody>
+            </table>
+          </div>
         </div>
         <div class="result-section">
           <h3>ロール別チャンピオン</h3>
@@ -40,9 +66,19 @@
           <div id="type-champions" class="type-lists"></div>
         </div>
         <div class="result-section">
+          <h3>ダメージタイプ別チャンピオン</h3>
+          <div id="damage-type-champions" class="type-lists"></div>
+        </div>
+        <div class="result-section">
+          <h3>攻撃範囲別チャンピオン</h3>
+          <div id="attack-range-champions" class="type-lists"></div>
+        </div>
+        <div class="result-section">
           <div id="stats-container" class="stats-container"></div>
         </div>
-        <button id="back-button" class="back-button">入力画面に戻る</button>
+        <div class="button-container">
+          <button id="back-button" class="back-button">入力画面に戻る</button>
+        </div>
       </div>
     </main>
 
