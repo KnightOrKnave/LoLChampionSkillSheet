@@ -187,6 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
     formPage.classList.add('active');
   });
 
+  // 最後に移動ボタンの処理
+  const scrollBottomButton = document.getElementById('scroll-bottom');
+  scrollBottomButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
+  });
+
   // 初期化
   createChampionForm();
 });

@@ -217,7 +217,7 @@ body {
     background-color: #FF9800;
 }
 
-.submit-button, .back-button {
+.submit-button, .back-button, .scroll-bottom-button {
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -228,8 +228,18 @@ body {
     margin-top: 2rem;
 }
 
-.submit-button:hover, .back-button:hover {
+.submit-button:hover, .back-button:hover, .scroll-bottom-button:hover {
     opacity: 0.9;
+}
+
+.scroll-bottom-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 0;
 }
 
 .result-section {
