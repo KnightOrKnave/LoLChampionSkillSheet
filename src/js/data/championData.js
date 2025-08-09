@@ -6,7 +6,7 @@ export const champions = [
     roles: ['TOP'],
     types: ['ファイター'],
     attributes: ['近接', '持続火力', '自己回復'],
-    damage: '物理',
+    damage: '物理'
   },
   {
     name: 'Ahri',
@@ -14,8 +14,41 @@ export const champions = [
     roles: ['MID'],
     types: ['メイジ', 'アサシン'],
     attributes: ['遠隔', '機動力', 'バースト'],
-    damage: '魔法',
+    damage: '魔法'
   },
+  {
+    name: 'Akali',
+    nameJa: 'アカリ',
+    roles: ['MID', 'TOP'],
+    types: ['アサシン'],
+    attributes: ['近接', '機動力', 'バースト'],
+    damage: '魔法'
+  },
+  {
+    name: 'Akshan',
+    nameJa: 'アクシャン',
+    roles: ['MID', 'TOP'],
+    types: ['マークスマン', 'アサシン'],
+    attributes: ['遠隔', '機動力', 'ステルス'],
+    damage: '物理'
+  },
+  {
+    name: 'Alistar',
+    nameJa: 'アリスター',
+    roles: ['SUPPORT'],
+    types: ['タンク', 'サポート'],
+    attributes: ['近接', '行動妨害', 'イニシエーター'],
+    damage: '魔法'
+  },
+  // ... 他のチャンピオンも同様に追加
+  {
+    name: 'Zyra',
+    nameJa: 'ザイラ',
+    roles: ['SUPPORT', 'MID'],
+    types: ['メイジ', 'サポート'],
+    attributes: ['遠隔', '召喚', '行動妨害'],
+    damage: '魔法'
+  }
 ].sort((a, b) => a.nameJa.localeCompare(b.nameJa, 'ja')); // 五十音順にソート
 
 // ロール定義

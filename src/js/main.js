@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       div.className = 'champion-item';
 
       div.innerHTML = `
-                <span class="champion-name">${champion.name}</span>
+                <span class="champion-name">${champion.nameJa}</span>
                 <select class="skill-select" name="${champion.name}">
                     <option value="-100">使えない</option>
                     <option value="0" selected>使ったことない</option>
