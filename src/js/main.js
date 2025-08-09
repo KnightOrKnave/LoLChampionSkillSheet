@@ -1,31 +1,4 @@
-import { champions, roles, types } from './data/champions.js';
-
-// 統計情報の計算
-function calculateStats(usableChampions) {
-    const stats = {
-        damage: { 物理: 0, 魔法: 0, 混合: 0 },
-        range: { 近接: 0, 遠隔: 0 },
-        attributes: {}
-    };
-
-    usableChampions.forEach(champion => {
-        // ダメージタイプの集計
-        stats.damage[champion.damage]++;
-
-        // 射程の集計
-        if (champion.attributes.includes('近接')) stats.range.近接++;
-        if (champion.attributes.includes('遠隔')) stats.range.遠隔++;
-
-        // その他の属性の集計
-        champion.attributes.forEach(attr => {
-            if (attr !== '近接' && attr !== '遠隔') {
-                stats.attributes[attr] = (stats.attributes[attr] || 0) + 1;
-            }
-        });
-    });
-
-    return stats;
-}
+import { champions, roles, types, attributes, damageTypes } from './data/championData.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const formPage = document.getElementById('form-page');
@@ -40,37 +13,60 @@ document.addEventListener('DOMContentLoaded', () => {
       const div = document.createElement('div');
       div.className = 'champion-item';
 
-            div.innerHTML = `
+      div.innerHTML = `
                 <span class="champion-name">${champion.name}</span>
-                <div class="skill-radio-group">
-                    <label class="skill-radio">
-                        <input type="radio" name="${champion.name}" value="-100">
-                        <span class="skill-label bad">使えない</span>
-                    </label>
-                    <label class="skill-radio">
-                        <input type="radio" name="${champion.name}" value="0" checked>
-                        <span class="skill-label novice">使ったことない</span>
-                    </label>
-                    <label class="skill-radio">
-                        <input type="radio" name="${champion.name}" value="25">
-                        <span class="skill-label beginner">スキルはわかる</span>
-                    </label>
-                    <label class="skill-radio">
-                        <input type="radio" name="${champion.name}" value="50">
-                        <span class="skill-label intermediate">使える</span>
-                    </label>
-                    <label class="skill-radio">
-                        <input type="radio" name="${champion.name}" value="75">
-                        <span class="skill-label advanced">得意</span>
-                    </label>
-                    <label class="skill-radio">
-                        <input type="radio" name="${champion.name}" value="100">
-                        <span class="skill-label master">絶対の自信あり</span>
-                    </label>
-                </div>
-            `;      championsContainer.appendChild(div);
+                <select class="skill-select" name="${champion.name}">
+                    <option value="-100">使えない</option>
+                    <option value="0" selected>使ったことない</option>
+                    <option value="25">スキルはわかる</option>
+                    <option value="50">使える</option>
+                    <option value="75">得意</option>
+                    <option value="100">絶対の自信あり</option>
+                </select>
+            `;
+
+      championsContainer.appendChild(div);
     });
   }
+
+    // タイプごとの統計を計算
+    function calculateTypeStats(champions, formData) {
+        const stats = {
+            types: {},
+            roles: {},
+            damage: { 物理: 0, 魔法: 0, 混合: 0 },
+            range: { 近接: 0, 遠隔: 0 },
+            attributes: {}
+        };
+
+        champions.forEach(champ => {
+            // タイプの集計
+            champ.types.forEach(type => {
+                stats.types[type] = (stats.types[type] || 0) + 1;
+            });
+
+            // ロールの集計
+            champ.roles.forEach(role => {
+                stats.roles[role] = (stats.roles[role] || 0) + 1;
+            });
+
+            // ダメージタイプの集計
+            stats.damage[champ.damage]++;
+
+            // レンジタイプの集計
+            if (champ.attributes.includes('近接')) stats.range.近接++;
+            if (champ.attributes.includes('遠隔')) stats.range.遠隔++;
+
+            // その他の属性の集計
+            champ.attributes.forEach(attr => {
+                if (attr !== '近接' && attr !== '遠隔') {
+                    stats.attributes[attr] = (stats.attributes[attr] || 0) + 1;
+                }
+            });
+        });
+
+        return stats;
+    }
 
     // 結果の表示
     function showResults(formData) {
