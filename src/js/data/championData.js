@@ -1,3 +1,4 @@
+// チャンピオンデータ
 export const champions = [
     {
         name: "Aatrox",
@@ -15,8 +16,7 @@ export const champions = [
         attributes: ["遠隔", "機動力", "バースト"],
         damage: "魔法"
     }
-    // ... 他のチャンピオンも同様に
-];
+].sort((a, b) => a.nameJa.localeCompare(b.nameJa, 'ja')); // 五十音順にソート
 
 // ロール定義
 export const roles = {
@@ -27,7 +27,7 @@ export const roles = {
     SUPPORT: "サポート"
 };
 
-// タイプ定義（チャンピオンの主要な役割）
+// チャンピオンタイプ定義
 export const types = {
     タンク: "タンク",
     ファイター: "ファイター",
@@ -37,7 +37,7 @@ export const types = {
     サポート: "サポート"
 };
 
-// 属性定義（チャンピオンの特徴）
+// 属性定義
 export const attributes = {
     近接: "近接",
     遠隔: "遠隔",
