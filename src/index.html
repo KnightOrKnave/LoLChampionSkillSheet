@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LoL チャンピオン練度チェック</title>
-    <link rel="stylesheet" href="styles/main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
     <header class="header">
-        <h1>LoL チャンピオン練度チェック</h1>
+      <h1>LoL チャンピオン練度チェック</h1>
     </header>
 
     <main class="main">
-        <div id="form-page" class="page active">
-            <h2>チャンピオン練度入力</h2>
-            <form id="champion-form" class="champion-form">
-                <div id="champions-container" class="champions-container">
-                    <!-- チャンピオンリストがここに動的に追加されます -->
-                </div>
-                <button type="submit" class="submit-button">結果を確認</button>
-            </form>
-        </div>
+      <div id="form-page" class="page active">
+        <h2>チャンピオン練度入力</h2>
+        <form id="champion-form" class="champion-form">
+          <div id="champions-container" class="champions-container">
+            <!-- チャンピオンリストがここに動的に追加されます -->
+          </div>
+          <button type="submit" class="submit-button">結果を確認</button>
+        </form>
+      </div>
 
-        <div id="result-page" class="page">
-            <h2>練度チェック結果</h2>
-            <div class="result-section">
-                <h3>使用可能なチャンピオン</h3>
-                <ul id="mastered-champions" class="champion-list"></ul>
-            </div>
-            <div class="result-section">
-                <h3>ロール別チャンピオン</h3>
-                <div id="role-champions" class="role-lists"></div>
-            </div>
-            <div class="result-section">
-                <h3>役割別チャンピオン</h3>
-                <div id="type-champions" class="type-lists"></div>
-            </div>
-            <button id="back-button" class="back-button">入力画面に戻る</button>
+      <div id="result-page" class="page">
+        <h2>練度チェック結果</h2>
+        <div class="result-section">
+          <h3>使用可能なチャンピオン</h3>
+          <ul id="mastered-champions" class="champion-list"></ul>
         </div>
+        <div class="result-section">
+          <h3>ロール別チャンピオン</h3>
+          <div id="role-champions" class="role-lists"></div>
+        </div>
+        <div class="result-section">
+          <h3>役割別チャンピオン</h3>
+          <div id="type-champions" class="type-lists"></div>
+        </div>
+        <button id="back-button" class="back-button">入力画面に戻る</button>
+      </div>
     </main>
 
     <script type="module" src="js/main.js"></script>
-</body>
+  </body>
 </html>
