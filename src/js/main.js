@@ -128,17 +128,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // テーブル表示用の関数
-    function updateChampionsTable(champions, sortBy = 'score-desc', filterText = '') {
+    function updateChampionsTable(
+      champions,
+      sortBy = 'score-desc',
+      filterText = ''
+    ) {
       const tableBody = document.getElementById('champions-table-body');
-      const filteredChampions = champions.filter(champ => 
-        filterText === '' || champ.nameJa.toLowerCase().includes(filterText.toLowerCase())
+      const filteredChampions = champions.filter(
+        (champ) =>
+          filterText === '' ||
+          champ.nameJa.toLowerCase().includes(filterText.toLowerCase())
       );
 
       // ソート処理
       const sortedChampions = [...filteredChampions].sort((a, b) => {
         const scoreA = parseInt(formData.get(a.name));
         const scoreB = parseInt(formData.get(b.name));
-        
+
         switch (sortBy) {
           case 'score-desc':
             return scoreB - scoreA;
@@ -154,27 +160,40 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // テーブル内容の更新
-      tableBody.innerHTML = sortedChampions.map(champ => {
-        const score = parseInt(formData.get(champ.name));
-        const skillLevel = getSkillLevel(score);
-        const skillColorClass = 
-          score >= 75 ? 'advanced' : 
-          score >= 50 ? 'intermediate' : 
-          score >= 25 ? 'beginner' : 
-          score === -100 ? 'bad' : 'novice';
+      tableBody.innerHTML = sortedChampions
+        .map((champ) => {
+          const score = parseInt(formData.get(champ.name));
+          const skillLevel = getSkillLevel(score);
+          const skillColorClass =
+            score >= 75
+              ? 'advanced'
+              : score >= 50
+              ? 'intermediate'
+              : score >= 25
+              ? 'beginner'
+              : score === -100
+              ? 'bad'
+              : 'novice';
 
-        return `
+          return `
           <tr>
             <td>${champ.nameJa}</td>
             <td>${score}</td>
             <td><span class="skill-badge ${skillColorClass}">${skillLevel}</span></td>
-            <td><div class="badge-list">${champ.roles.map(role => `<span class="badge">${roles[role]}</span>`).join('')}</div></td>
-            <td><div class="badge-list">${champ.types.map(type => `<span class="badge">${types[type]}</span>`).join('')}</div></td>
+            <td><div class="badge-list">${champ.roles
+              .map((role) => `<span class="badge">${roles[role]}</span>`)
+              .join('')}</div></td>
+            <td><div class="badge-list">${champ.types
+              .map((type) => `<span class="badge">${types[type]}</span>`)
+              .join('')}</div></td>
             <td><span class="badge">${damageTypes[champ.damage]}</span></td>
-            <td><span class="badge">${champ.attributes.includes('遠隔') ? '遠隔' : '近接'}</span></td>
+            <td><span class="badge">${
+              champ.attributes.includes('遠隔') ? '遠隔' : '近接'
+            }</span></td>
           </tr>
         `;
-      }).join('');
+        })
+        .join('');
     }
 
     // イベントリスナーの設定
@@ -182,11 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterInput = document.getElementById('champion-filter');
 
     sortSelect.addEventListener('change', () => {
-      updateChampionsTable(usableChampions, sortSelect.value, filterInput.value);
+      updateChampionsTable(
+        usableChampions,
+        sortSelect.value,
+        filterInput.value
+      );
     });
 
     filterInput.addEventListener('input', () => {
-      updateChampionsTable(usableChampions, sortSelect.value, filterInput.value);
+      updateChampionsTable(
+        usableChampions,
+        sortSelect.value,
+        filterInput.value
+      );
     });
 
     // 初期テーブル表示
