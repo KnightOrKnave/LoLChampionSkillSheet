@@ -1,4 +1,10 @@
-import { champions, roles, types, attributes, damageTypes } from './data/championData.js';
+import {
+  champions,
+  roles,
+  types,
+  attributes,
+  damageTypes,
+} from './data/championData.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const formPage = document.getElementById('form-page');
@@ -29,51 +35,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    // タイプごとの統計を計算
-    function calculateTypeStats(champions, formData) {
-        const stats = {
-            types: {},
-            roles: {},
-            damage: { 物理: 0, 魔法: 0, 混合: 0 },
-            range: { 近接: 0, 遠隔: 0 },
-            attributes: {}
-        };
+  // タイプごとの統計を計算
+  function calculateTypeStats(champions, formData) {
+    const stats = {
+      types: {},
+      roles: {},
+      damage: { 物理: 0, 魔法: 0, 混合: 0 },
+      range: { 近接: 0, 遠隔: 0 },
+      attributes: {},
+    };
 
-        champions.forEach(champ => {
-            // タイプの集計
-            champ.types.forEach(type => {
-                stats.types[type] = (stats.types[type] || 0) + 1;
-            });
+    champions.forEach((champ) => {
+      // タイプの集計
+      champ.types.forEach((type) => {
+        stats.types[type] = (stats.types[type] || 0) + 1;
+      });
 
-            // ロールの集計
-            champ.roles.forEach(role => {
-                stats.roles[role] = (stats.roles[role] || 0) + 1;
-            });
+      // ロールの集計
+      champ.roles.forEach((role) => {
+        stats.roles[role] = (stats.roles[role] || 0) + 1;
+      });
 
-            // ダメージタイプの集計
-            stats.damage[champ.damage]++;
+      // ダメージタイプの集計
+      stats.damage[champ.damage]++;
 
-            // レンジタイプの集計
-            if (champ.attributes.includes('近接')) stats.range.近接++;
-            if (champ.attributes.includes('遠隔')) stats.range.遠隔++;
+      // レンジタイプの集計
+      if (champ.attributes.includes('近接')) stats.range.近接++;
+      if (champ.attributes.includes('遠隔')) stats.range.遠隔++;
 
-            // その他の属性の集計
-            champ.attributes.forEach(attr => {
-                if (attr !== '近接' && attr !== '遠隔') {
-                    stats.attributes[attr] = (stats.attributes[attr] || 0) + 1;
-                }
-            });
-        });
+      // その他の属性の集計
+      champ.attributes.forEach((attr) => {
+        if (attr !== '近接' && attr !== '遠隔') {
+          stats.attributes[attr] = (stats.attributes[attr] || 0) + 1;
+        }
+      });
+    });
 
-        return stats;
-    }
+    return stats;
+  }
 
-    // 結果の表示
-    function showResults(formData) {
-        const masteredChampions = document.getElementById('mastered-champions');
-        const roleChampions = document.getElementById('role-champions');
-        const typeChampions = document.getElementById('type-champions');
-        const statsContainer = document.getElementById('stats-container');    // 使用可能なチャンピオンのフィルタリング（スコア25以上）
+  // 結果の表示
+  function showResults(formData) {
+    const masteredChampions = document.getElementById('mastered-champions');
+    const roleChampions = document.getElementById('role-champions');
+    const typeChampions = document.getElementById('type-champions');
+    const statsContainer = document.getElementById('stats-container'); // 使用可能なチャンピオンのフィルタリング（スコア25以上）
     const usableChampions = champions.filter(
       (champ) => parseInt(formData.get(champ.name)) >= 25
     );
