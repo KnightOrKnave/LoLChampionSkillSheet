@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="skill-radio-group">
                     <label class="skill-radio">
                         <input type="radio" name="${champion.name}" value="-100">
-                        <span class="skill-label bad">使えない</span>
+                        <span class="skill-label bad">苦手・使えない</span>
                     </label>
                     <label class="skill-radio">
                         <input type="radio" name="${champion.name}" value="0" checked>
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (score === 75) return '得意';
       if (score === 50) return '使える';
       if (score === 25) return 'スキルはわかる';
-      if (score === -100) return '使えない';
+      if (score === -100) return '苦手・使えない';
       return '使ったことない';
     };
 
@@ -285,9 +285,14 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .join('');
 
-    // ページの切り替え
+    // ページの切り替えとスクロール位置のリセット
     formPage.classList.remove('active');
     resultPage.classList.add('active');
+    // ページトップにスクロール
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant', // すぐにトップに移動
+    });
   }
 
   // フォームの送信処理
@@ -301,6 +306,11 @@ document.addEventListener('DOMContentLoaded', () => {
   backButton.addEventListener('click', () => {
     resultPage.classList.remove('active');
     formPage.classList.add('active');
+    // ページトップにスクロール
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant', // すぐにトップに移動
+    });
   });
 
   // スクロールボタンの処理

@@ -1375,7 +1375,7 @@ export const roles = {
   TOP: 'トップ',
   JUNGLE: 'ジャングル',
   MID: 'ミッド',
-  ADC: 'ADC',
+  BOTTOM: 'ボット',
   SUPPORT: 'サポート',
 };
 
